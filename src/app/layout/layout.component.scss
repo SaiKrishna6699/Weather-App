@@ -2,7 +2,6 @@
     width: 360px;
     height: 85%;
     max-width: 80%;
-    background-color: rgba(98, 26, 215, 0.874);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -15,6 +14,37 @@
     flex-wrap: wrap;
     justify-content: center;
     font-family: 'Open Sans', sans-serif;
+
+    &.bg1 {
+        background-image: url('../../assets/sky.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        backdrop-filter: blur(10px);
+        opacity: 0.9;
+    }
+
+    &.bg2 {
+        background-image: url('../../assets/night.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        backdrop-filter: blur(10px);
+        opacity: 0.9;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(100px);
+        opacity: 0.4;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        pointer-events: none;
+        z-index: -1;
+    }
 
     .search-div {
         width: 97%;
@@ -34,9 +64,9 @@
                 width: 87%;
                 justify-content: center;
 
-                input[type="search"] {
+                input[type='search'] {
                     border: 0;
-                    background-color: rgba(255, 255, 255, 0.1);
+                    background-color: rgba(0, 0, 0, 0.2);
                     border-radius: 7px 0px 0px 7px;
                     width: 85%;
                     max-width: 280px;
@@ -48,13 +78,13 @@
                     color: #fff;
 
                     &::placeholder {
-                        color: rgba(255, 255, 255, 0.2);
+                        color: rgba(255, 255, 255, 0.4);
                     }
                 }
 
                 button {
                     color: #fff;
-                    background-color: rgba(255, 255, 255, 0.1);
+                    background-color: rgba(0, 0, 0, 0.2);
                     border: 0;
                     border-left: 1px solid rgba(255, 255, 255, 0.2);
                     border-radius: 0px 7px 7px 0px;
@@ -74,6 +104,16 @@
         flex-wrap: wrap;
         width: 100%;
         height: 22%;
+
+        .sun{
+            font-size: 40px;
+            color: orange;
+            margin: auto auto -5% auto;
+        }
+        .moon{
+            font-size: 40px;
+            margin: auto auto -5% auto;
+        }
 
         h2 {
             font-family: 'Montserrat', sans-serif;
@@ -135,7 +175,7 @@
 
         .grid {
             border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.2);
             width: 85%;
             height: 95%;
 
@@ -145,18 +185,22 @@
             margin-bottom: 10%;
 
             .sub-grids {
+                width: auto;
                 font-size: 10px;
                 font-family: 'Montserrat', sans-serif;
                 font-weight: 800;
-                text-align: center;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                gap: 5%;
+                
 
                 .items {
                     font-size: 12px;
-
+                    display: flex;
+                    flex-wrap: wrap;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
 
                     .grid-icons {
                         width: 20px;
@@ -166,7 +210,13 @@
                         font-size: 20px;
                     }
 
-                    .value{
+                    .two {
+                        font-size: 6px;
+                        margin-top: 12%;
+                        margin-right: 5%;
+                    }
+
+                    .value {
                         font-size: 16px;
                         margin: auto;
                         text-indent: 2%;

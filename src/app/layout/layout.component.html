@@ -1,45 +1,68 @@
-<div class="base-layout">
+<div class="base-layout" [ngClass]="{
+    'bg2': (time >= 18 && time <= 23 || (time >= 0 && time < 6)),
+    'bg1': time >= 6 && time < 18
+  }">
     <div class="search-div">
         <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
             <label>
-              <input type="search" formControlName="city" placeholder="CITY/COUNTRY">
-              <button type="submit">
-                <fa-icon [icon]="iconArray[0]"></fa-icon>
-              </button>
+                <input type="search" formControlName="city" placeholder="CITY/COUNTRY">
+                <button type="submit">
+                    <fa-icon [icon]="iconArray[0]"></fa-icon>
+                </button>
             </label>
-          </form>
+        </form>
 
     </div>
+    <ng-container *ngIf="submit">
+        <div class="info">
+            <ng-container *ngIf="submit">
+                <ng-container *ngIf="time >= 18 && time <= 23 || time >= 0 && time < 6">
+                    <fa-icon class="moon" [icon]="weatherIcons[1]"></fa-icon>
+                </ng-container>
+                <ng-container *ngIf="time >= 6 && time < 18">
+                    <fa-icon class="sun" [icon]="weatherIcons[0]"></fa-icon>
+                </ng-container>
+            </ng-container>
 
-    <div class="info">
-        
-        <h2>{{temperature | number: '1.0-0'}}&nbsp;<span>&deg;</span>c</h2>
-        <p>{{city}}</p>
-        <p><span>{{country}}</span></p>
-    </div>
-    <div class="lower">
-        <div class="sub-heading">
-            <p>More Information</p>
+
+            <h2>{{temperature | number: '1.0-0'}}&nbsp;<span>&deg;</span>c</h2>
+            <p>{{city}}</p>
+            <p><span>{{country}}</span></p>
         </div>
-        <div class="grid">
+        <div class="lower">
+            <div class="sub-heading">
+                <p>More Information</p>
+            </div>
+            <div class="grid">
 
-            <div class="sub-grids">
-                <p class="items"><span class="grid-icons"><fa-icon [icon]="iconArray[5]">&nbsp;</fa-icon>&nbsp;</span><span class="value">{{localTime | date:'h:mm a'}}</span>
-             </p>
-            </div>
-            <div class="sub-grids">
-                <p class="items"><span class="grid-icons"><fa-icon [icon]="iconArray[1]">&nbsp;</fa-icon>&nbsp;</span><span class="value">{{maxTemp}}</span>
-                    &deg;C </p>
-            </div>
-            <div class="sub-grids">
-                <p class="items"><span class="grid-icons"><fa-icon [icon]="iconArray[3]">&nbsp;</fa-icon>&nbsp;</span><span class="value">{{humidity}}</span>
-                    &percnt; </p>
-            </div>
-            <div class="sub-grids">
-                <p class="items"><span class="grid-icons"><fa-icon [icon]="iconArray[4]">&nbsp;</fa-icon>&nbsp;</span><span class="value">{{wind}}</span>
-                    <span>kmph</span>
-                </p>
+                <div class="sub-grids">
+                    <p class="items"><span class="grid-icons"><fa-icon
+                                [icon]="iconArray[5]">&nbsp;</fa-icon></span><span class="two">Local Time</span>
+                    </p>
+                    <p class="value">&nbsp;<span>{{localTime | date:'h:mm a'}}</span></p>
+                </div>
+                <div class="sub-grids">
+                    <p class="items"><span class="grid-icons"><fa-icon
+                                [icon]="iconArray[1]">&nbsp;</fa-icon>&nbsp;</span><span class="two">Max Temp</span>
+                    </p>
+                    <p class="value"><span>{{maxTemp}}</span>
+                        &deg;C </p>
+                </div>
+                <div class="sub-grids">
+                    <p class="items"><span class="grid-icons"><fa-icon
+                                [icon]="iconArray[3]">&nbsp;</fa-icon>&nbsp;</span><span class="two">Humidity</span>
+                    </p>
+                    <p class="value"><span>{{humidity}}</span>&percnt; </p>
+                </div>
+                <div class="sub-grids">
+                    <p class="items"><span class="grid-icons"><fa-icon
+                                [icon]="iconArray[4]">&nbsp;</fa-icon></span><span class="two">Wind</span>
+                    </p>
+                    <p class="value">&nbsp;<span>{{wind}}</span>
+                        <span>kmph</span>
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
+    </ng-container>
 </div>
