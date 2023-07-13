@@ -12,7 +12,7 @@ export class WeatherService {
   constructor(private http: HttpClient) { }
 
   getWeatherData(city: string): Observable<any> {
-    const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${this.apiKey}&q=${city}&aqi=no`;
+    const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${this.apiKey}&q=${city}&aqi=no`;
     return this.http.get(apiUrl);
   }
   
