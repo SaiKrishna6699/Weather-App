@@ -14,6 +14,42 @@
   flex-wrap: wrap;
   justify-content: center;
   font-family: "Open Sans", sans-serif;
+  z-index: 0;
+
+  .bg-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: -3; /* behind overlay and content */
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .bg-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scale(1.02);
+    opacity: 0;
+    transition: opacity 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 50ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 700ms ease;
+    will-change: opacity, transform, filter;
+  }
+
+  .bg-layer.day {
+    background-image: url("../../assets/sky.jpg");
+    opacity: 1; /* default visible */
+    transform: scale(1.02);
+  }
+
+  .bg-layer.night {
+    background-image: url("../../assets/night.png");
+    opacity: 0;
+    filter: brightness(0.85) saturate(1.05);
+    transform: scale(1.05);
+  }
 
   &.bg1 {
     background-image: url("../../assets/sky.jpg");
@@ -24,11 +60,16 @@
   }
 
   &.bg2 {
-    background-image: url("../../assets/night.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    backdrop-filter: blur(10px);
-    opacity: 0.9;
+    .bg-layer.day {
+      opacity: 0;
+      transform: scale(0.98);
+      filter: brightness(0.8) saturate(0.9);
+    }
+    .bg-layer.night {
+      opacity: 1;
+      transform: scale(1);
+      filter: brightness(1) saturate(1.1);
+    }
   }
 
   &::before {
@@ -43,7 +84,8 @@
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     pointer-events: none;
-    z-index: -1;
+    z-index: -2;
+    transition: backdrop-filter 600ms ease, opacity 600ms ease;
   }
 
   .search-div {
@@ -104,7 +146,7 @@
     transform: translateX(-50%);
     width: 95%;
     max-width: 300px;
-    background: rgba(255,255,255,0.6);
+    background: rgba(255, 255, 255, 0.6);
     color: #222;
     list-style: none;
     padding: 6px 0;

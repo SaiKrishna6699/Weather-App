@@ -5,6 +5,10 @@
     bg1: time >= 6 && time < 18
   }"
 >
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="bg-layer day"></div>
+    <div class="bg-layer night"></div>
+  </div>
   <div class="search-div">
     <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
       <label>
@@ -22,7 +26,9 @@
       </label>
     </form>
 
-    <div *ngIf="showMinMessage" class="suggestions min-msg">Enter at least 3 letters</div>
+    <div *ngIf="showMinMessage" class="suggestions min-msg">
+      Enter at least 3 letters
+    </div>
 
     <ul *ngIf="suggestions?.length" class="suggestions">
       <li *ngFor="let s of suggestions" (click)="selectSuggestion(s)">
