@@ -1,68 +1,117 @@
-<div class="base-layout" [ngClass]="{
-    'bg2': (time >= 18 && time <= 23 || (time >= 0 && time < 6)),
-    'bg1': time >= 6 && time < 18
-  }">
-    <div class="search-div">
-        <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-            <label>
-                <input type="search" formControlName="city" placeholder="CITY/COUNTRY">
-                <button type="submit">
-                    <fa-icon [icon]="iconArray[0]"></fa-icon>
-                </button>
-            </label>
-        </form>
+<div
+  class="base-layout"
+  [ngClass]="{
+    bg2: (time >= 18 && time <= 23) || (time >= 0 && time < 6),
+    bg1: time >= 6 && time < 18
+  }"
+>
+  <div class="search-div">
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <label>
+        <input
+          #cityInput
+          type="search"
+          formControlName="city"
+          placeholder="CITY/COUNTRY"
+          autocomplete="off"
+          (focus)="onInputFocus()"
+        />
+        <button type="submit">
+          <fa-icon [icon]="iconArray[0]"></fa-icon>
+        </button>
+      </label>
+    </form>
 
+    <div *ngIf="showMinMessage" class="suggestions min-msg">Enter at least 3 letters</div>
+
+    <ul *ngIf="suggestions?.length" class="suggestions">
+      <li *ngFor="let s of suggestions" (click)="selectSuggestion(s)">
+        <!-- build the same compact display in the template for preview -->
+        <div class="suggest-title">
+          {{
+            (s.properties.city || s.properties.name || s.properties.formatted) +
+              (s.properties.state_code || s.properties.state
+                ? ", " + (s.properties.state_code || s.properties.state)
+                : "") +
+              (s.properties.country ? ", " + s.properties.country : "")
+          }}
+        </div>
+        <div class="suggest-sub">
+          {{ s.properties.formatted }}
+        </div>
+      </li>
+    </ul>
+  </div>
+  <ng-container *ngIf="submit">
+    <div class="info">
+      <ng-container *ngIf="submit">
+        <ng-container
+          *ngIf="(time >= 18 && time <= 23) || (time >= 0 && time < 6)"
+        >
+          <fa-icon class="moon" [icon]="weatherIcons[1]"></fa-icon>
+        </ng-container>
+        <ng-container *ngIf="time >= 6 && time < 18">
+          <fa-icon class="sun" [icon]="weatherIcons[0]"></fa-icon>
+        </ng-container>
+        <ng-container *ngIf="temperature > 40">
+          <p class="weather-day">Hot Day</p>
+        </ng-container>
+      </ng-container>
+
+      <h2>{{ temperature | number : "1.0-0" }}&nbsp;<span>&deg;</span>c</h2>
+      <p>{{ city }}</p>
+      <p>
+        <span>{{ country }}</span>
+      </p>
     </div>
-    <ng-container *ngIf="submit">
-        <div class="info">
-            <ng-container *ngIf="submit">
-                <ng-container *ngIf="time >= 18 && time <= 23 || time >= 0 && time < 6">
-                    <fa-icon class="moon" [icon]="weatherIcons[1]"></fa-icon>
-                </ng-container>
-                <ng-container *ngIf="time >= 6 && time < 18">
-                    <fa-icon class="sun" [icon]="weatherIcons[0]"></fa-icon>
-                </ng-container>
-            </ng-container>
-
-
-            <h2>{{temperature | number: '1.0-0'}}&nbsp;<span>&deg;</span>c</h2>
-            <p>{{city}}</p>
-            <p><span>{{country}}</span></p>
+    <div class="lower">
+      <div class="sub-heading">
+        <p>More Information</p>
+      </div>
+      <div class="grid">
+        <div class="sub-grids">
+          <p class="items">
+            <span class="grid-icons"
+              ><fa-icon [icon]="iconArray[5]">&nbsp;</fa-icon></span
+            ><span class="two">Local Time</span>
+          </p>
+          <p class="value">
+            &nbsp;<span>{{ localTime | date : "h:mm a" }}</span>
+          </p>
         </div>
-        <div class="lower">
-            <div class="sub-heading">
-                <p>More Information</p>
-            </div>
-            <div class="grid">
-
-                <div class="sub-grids">
-                    <p class="items"><span class="grid-icons"><fa-icon
-                                [icon]="iconArray[5]">&nbsp;</fa-icon></span><span class="two">Local Time</span>
-                    </p>
-                    <p class="value">&nbsp;<span>{{localTime | date:'h:mm a'}}</span></p>
-                </div>
-                <div class="sub-grids">
-                    <p class="items"><span class="grid-icons"><fa-icon
-                                [icon]="iconArray[1]">&nbsp;</fa-icon>&nbsp;</span><span class="two">Max Temp</span>
-                    </p>
-                    <p class="value"><span>{{maxTemp}}</span>
-                        &deg;C </p>
-                </div>
-                <div class="sub-grids">
-                    <p class="items"><span class="grid-icons"><fa-icon
-                                [icon]="iconArray[3]">&nbsp;</fa-icon>&nbsp;</span><span class="two">Humidity</span>
-                    </p>
-                    <p class="value"><span>{{humidity}}</span>&percnt; </p>
-                </div>
-                <div class="sub-grids">
-                    <p class="items"><span class="grid-icons"><fa-icon
-                                [icon]="iconArray[4]">&nbsp;</fa-icon></span><span class="two">Wind</span>
-                    </p>
-                    <p class="value">&nbsp;<span>{{wind}}</span>
-                        <span>kmph</span>
-                    </p>
-                </div>
-            </div>
+        <div class="sub-grids">
+          <p class="items">
+            <span class="grid-icons"
+              ><fa-icon [icon]="iconArray[1]">&nbsp;</fa-icon>&nbsp;</span
+            ><span class="two">Max Temp</span>
+          </p>
+          <p class="value">
+            <span>{{ maxTemp }}</span> &deg;C
+          </p>
         </div>
-    </ng-container>
+        <div class="sub-grids">
+          <p class="items">
+            <span class="grid-icons"
+              ><fa-icon [icon]="iconArray[3]">&nbsp;</fa-icon>&nbsp;</span
+            ><span class="two">Humidity</span>
+          </p>
+          <p class="value">
+            <span>{{ humidity }}</span
+            >&percnt;
+          </p>
+        </div>
+        <div class="sub-grids">
+          <p class="items">
+            <span class="grid-icons"
+              ><fa-icon [icon]="iconArray[4]">&nbsp;</fa-icon></span
+            ><span class="two">Wind</span>
+          </p>
+          <p class="value">
+            &nbsp;<span>{{ wind }}</span>
+            <span>kmph</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>
